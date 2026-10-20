@@ -1,7 +1,7 @@
 // Service Worker Minuit 01 — Mise en cache de la coque applicative pour un démarrage instantané sur mobile (PWA).
 // Les flux vidéo et appels API tiers (TMDB, Stremio, AllDebrid, Supabase) passent toujours en direct sur le réseau.
 
-const CACHE_NAME = 'minuit01-shell-v1.8';
+const CACHE_NAME = 'minuit01-shell-v1.9';
 const PRECACHE_URLS = [
   '/',
   '/index.html',
@@ -40,7 +40,7 @@ self.addEventListener('fetch', (event) => {
   // Navigation HTML : réseau d'abord, repli sur le cache en cas de coupure
   if (req.mode === 'navigate') {
     event.respondWith(
-      fetch(req)
+      fetch(req.url, { cache: 'no-store' })
         .then((res) => {
           const copy = res.clone();
           caches.open(CACHE_NAME).then((c) => c.put('/index.html', copy)).catch(() => undefined);
